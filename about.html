@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLKVI | Private Protection</title>
+<style>
+  :root{
+    --bg:#050505;
+    --bg2:#0b0b0b;
+    --panel:#101010;
+    --panel-soft:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08);
+    --line-strong:rgba(255,255,255,.14);
+    --text:#f2f2f2;
+    --muted:rgba(255,255,255,.78);
+    --soft:rgba(255,255,255,.58);
+    --accent:#b79a72;
+    --shadow:0 18px 40px rgba(0,0,0,.34);
+    --radius:24px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter, Arial, Helvetica, sans-serif;
+    background:linear-gradient(180deg,var(--bg) 0%, #080808 100%);
+    color:var(--text);
+    letter-spacing:.01em;
+    overflow-x:hidden;
+  }
+
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  .container{width:min(1180px, calc(100% - 48px));margin:0 auto}
+
+  .topbar{
+    position:fixed;
+    inset:12px 0 auto 0;
+    z-index:50;
+    pointer-events:none;
+  }
+  .nav-wrap{display:flex;justify-content:center}
+  .nav{
+    pointer-events:auto;
+    display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+    padding:10px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(8,8,8,.74);
+    backdrop-filter:blur(14px);
+    box-shadow:var(--shadow);
+  }
+  .nav a{
+    text-decoration:none;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:.72rem;
+    padding:11px 16px;
+    border-radius:999px;
+    color:rgba(255,255,255,.84);
+    transition:.2s ease;
+  }
+  .nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    background:#040404;
+  }
+  .hero-media,.hero-media img,.hero-shade{position:absolute;inset:0}
+  .hero-media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 12%;
+    transform:scale(1.02);
+    background:#040404;
+    filter:grayscale(1) contrast(1.05) brightness(.7);
+  }
+  .hero-shade{
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.68) 30%, rgba(0,0,0,.28) 56%, rgba(0,0,0,.64) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.48) 0%, rgba(0,0,0,.14) 38%, rgba(0,0,0,.74) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;width:100%;padding:118px 0 86px}
+  .hero-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:20px;
+    align-items:center;
+  }
+  .hero-copy{
+    max-width:760px;
+    padding:34px 36px 34px;
+    background:linear-gradient(180deg, rgba(0,0,0,.52), rgba(0,0,0,.3));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:30px;
+    backdrop-filter:blur(5px);
+    box-shadow:0 22px 55px rgba(0,0,0,.38);
+  }
+  .eyebrow{
+    display:inline-block;
+    margin-bottom:16px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:.24em;
+    font-size:.74rem;
+  }
+  h1{
+    margin:0;
+    max-width:11ch;
+    font-size:clamp(3.2rem,6vw,5.9rem);
+    line-height:.95;
+    letter-spacing:-.065em;
+  }
+  .lead{
+    margin:20px 0 0;
+    max-width:52rem;
+    color:var(--muted);
+    font-size:1.06rem;
+    line-height:1.78;
+  }
+
+  .hero-panel,
+  .panel,
+  .feature,
+  .contact-panel{
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(16,16,16,.92), rgba(12,12,12,.82));
+    box-shadow:var(--shadow);
+  }
+  .hero-panel{padding:28px}
+  .label,.kicker{
+    display:inline-block;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:.18em;
+    font-size:.72rem;
+  }
+  .hero-panel h2,.section-head h2,.panel h3,.contact-panel h3{
+    margin:12px 0 10px;
+    letter-spacing:-.04em;
+  }
+  .hero-panel h2{font-size:1.55rem}
+  .hero-panel p,.panel p,.feature p,.contact-panel p,.section-head p, li{
+    color:var(--muted);
+    line-height:1.8;
+    font-size:.98rem;
+  }
+  .statements{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+  .statements li{
+    padding:12px 14px;border-radius:16px;
+    background:var(--panel-soft);border:1px solid rgba(255,255,255,.06);
+  }
+
+  .section{padding:84px 0;border-top:1px solid rgba(255,255,255,.05)}
+  .section:first-of-type{border-top:none}
+  .section-head{max-width:780px;margin-bottom:32px}
+  .section.about-section{
+    padding-top:58px;
+    margin-top:0;
+  }
+  .section-head h2{font-size:clamp(2rem,4vw,3rem)}
+
+  .grid-2,.grid-4,.contact-wrap{display:grid;gap:22px}
+  .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .contact-wrap{grid-template-columns:1.1fr .9fr}
+
+  .panel,.feature,.contact-panel{padding:26px}
+  .feature small{color:var(--soft);letter-spacing:.16em;text-transform:uppercase}
+  .list-clean{margin:16px 0 0;padding-left:18px}
+  .contact-lines{display:grid;gap:14px;margin-top:18px}
+  .contact-item{
+    padding:14px 16px;border-radius:16px;background:var(--panel-soft);
+    border:1px solid rgba(255,255,255,.06)
+  }
+  .contact-item span{
+    display:block;margin-bottom:6px;color:var(--soft);
+    text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;
+  }
+
+  .footer{
+    padding:0;
+    border-top:1px solid rgba(255,255,255,.08);
+    background:#050505;
+  }
+  .footer-line{
+    min-height:72px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    color:rgba(255,255,255,.82);
+    font-size:.82rem;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+  }
+  .footer a{
+    text-decoration:none;
+    color:rgba(255,255,255,.82);
+  }
+  .footer a:hover{color:#fff}
+
+  @media (max-width:1100px){
+    .grid-4{grid-template-columns:1fr 1fr}
+    .contact-wrap{grid-template-columns:1fr}
+  }
+  @media (max-width:860px){
+    .container{width:min(100%, calc(100% - 30px))}
+    .hero{min-height:82svh}
+    .hero-inner{padding:96px 0 28px}
+    .grid-2,.grid-4,.contact-wrap{grid-template-columns:1fr}
+    .hero-media img{object-position:center top;transform:scale(1.02)}
+    .hero-copy{padding:24px 22px 26px}
+    h1{font-size:clamp(2.7rem,11vw,4.9rem)}
+    .nav a{font-size:.66rem;padding:10px 12px}
+    .footer-line{flex-direction:column;align-items:flex-start}
+    .section.about-section{padding-top:42px}
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="container nav-wrap">
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="#about">About</a>
+      <a href="#ethos">Ethos</a>
+      <a href="services.html">Services</a>
+      <a href="method.html">Method</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-media">
+      <img src="assets/img/kevin-photo.jpg" alt="Kevin Jeffery standing in front of a black vehicle">
+    </div>
+    <div class="hero-shade"></div>
+
+    <div class="hero-inner">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">BLKVI</div>
+          <h1>Private protection, professionally managed.</h1>
+          <p class="lead">BLKVI serves principals, executives, families, and public-facing clients who expect protection to be competent, discreet, and professionally managed from the first call forward. Founded by Kevin Jeffery, the firm is supported by a team of professionals aligned to the same standard of readiness, conduct, and client care.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section about-section" id="about">
+    <div class="container">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="kicker">Foundation</div>
+          <h3>Founded with a clear operating standard</h3>
+          <p>Kevin Jeffery founded BLKVI to offer private protection that is organized, discreet, and professionally executed. The standard is not built around theater. It is built around preparation, judgment, and the ability to move clients through complex environments without unnecessary exposure or disruption.</p>
+        </div>
+        <div class="panel">
+          <div class="kicker">Team standard</div>
+          <h3>A team aligned to that standard</h3>
+          <p>BLKVI is supported by professionals who are selected and trusted to work within that framework. Clients are not hiring a personality. They are retaining a firm whose team is expected to operate with consistency, discretion, respect, and composure in private, corporate, and high-visibility settings.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ethos">
+    <div class="container">
+      <div class="section-head">
+        <h2>Operating principles</h2>
+        <p>These principles define how BLKVI operates and what clients can expect from the professionals representing the firm.</p>
+      </div>
+      <div class="grid-4">
+        <div class="feature"><small>01</small><h3>Loyalty</h3><p>Commitment to the principal, the mission, and the obligation to protect without ego.</p></div>
+        <div class="feature"><small>02</small><h3>Integrity</h3><p>Discretion, honesty, and clean professional conduct in private and public settings.</p></div>
+        <div class="feature"><small>03</small><h3>Duty</h3><p>Readiness, punctuality, and follow-through before, during, and after every movement.</p></div>
+        <div class="feature"><small>04</small><h3>Respect</h3><p>Professional treatment of clients, families, staff, venues, crews, and support teams.</p></div>
+        <div class="feature"><small>05</small><h3>Selfless Service</h3><p>Focus on client safety and peace of mind, not attention or theatrics.</p></div>
+        <div class="feature"><small>06</small><h3>Honor</h3><p>A standard of conduct that aligns presence, decision-making, and responsibility.</p></div>
+        <div class="feature"><small>07</small><h3>Personal Courage</h3><p>Steady judgment under pressure, including the discipline not to overreact.</p></div>
+        <div class="feature"><small>08</small><h3>Adaptability</h3><p>Risk changes quickly. Effective protection adjusts before friction becomes failure.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer-line">
+    <div>© 2026 BLKVI</div>
+    <div><a href="contact.html">SI VIS PACEM, PARA BELLUM</a></div>
+  </div>
+</footer>
+</body>
+</html>

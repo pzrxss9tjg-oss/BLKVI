@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BLKVI | Services</title>
+<style>
+  :root{
+    --bg:#030303;
+    --panel:#0a0a0a;
+    --line:rgba(255,255,255,.10);
+    --line-soft:rgba(255,255,255,.06);
+    --text:#f4f4f4;
+    --muted:rgba(255,255,255,.68);
+    --soft:rgba(255,255,255,.42);
+    --accent:#b79a72;
+    --shadow:0 16px 40px rgba(0,0,0,.52);
+    --tile-shadow:0 10px 24px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text)}
+  body{
+    font-family:Inter, Arial, Helvetica, sans-serif;
+    letter-spacing:.01em;
+    background:
+      linear-gradient(180deg, #050505 0%, #020202 100%);
+    min-height:100vh;
+  }
+
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  button{font:inherit}
+
+  .shell{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .topbar{
+    width:100%;
+    border-bottom:1px solid var(--line-soft);
+    background:rgba(3,3,3,.96);
+  }
+
+  .nav-wrap{
+    width:min(100%, calc(100% - 56px));
+    margin:0 auto;
+    min-height:156px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .nav-side{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(170px, 1fr));
+    gap:16px;
+  }
+
+  .nav-pill{
+    min-height:56px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 18px;
+    border-radius:18px;
+    text-transform:uppercase;
+    letter-spacing:.18em;
+    font-size:.8rem;
+    color:rgba(255,255,255,.88);
+    background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:var(--tile-shadow);
+    transition:transform .18s ease, border-color .18s ease, background .18s ease;
+    white-space:nowrap;
+  }
+
+  .nav-pill:hover,
+  .nav-pill.active{
+    transform:translateY(-1px);
+    border-color:rgba(255,255,255,.2);
+    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  }
+
+
+  .main-stage{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:52px 0 64px;
+  }
+
+  .services-frame{
+    width:min(1200px, calc(100% - 56px));
+    padding:34px;
+    border:1px solid var(--line-soft);
+    border-radius:28px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.008));
+    box-shadow:var(--shadow);
+  }
+
+  .services-head{
+    display:flex;
+    justify-content:space-between;
+    gap:18px;
+    align-items:end;
+    margin-bottom:26px;
+  }
+
+  .kicker{
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:.22em;
+    font-size:.7rem;
+    margin-bottom:10px;
+  }
+
+  .services-head h1{
+    margin:0;
+    font-size:clamp(1.8rem, 3vw, 2.8rem);
+    letter-spacing:-.04em;
+  }
+
+  .services-head p{
+    margin:0;
+    max-width:32rem;
+    color:var(--muted);
+    line-height:1.7;
+    font-size:.96rem;
+  }
+
+  .tiles{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:18px;
+  }
+
+  .service-tile{
+    min-height:168px;
+    padding:20px 20px 18px;
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,.10);
+    background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+    box-shadow:var(--tile-shadow);
+    color:var(--text);
+    cursor:pointer;
+    text-align:left;
+    transition:transform .18s ease, border-color .18s ease, background .18s ease;
+  }
+
+  .service-tile:hover{
+    transform:translateY(-2px);
+    border-color:rgba(255,255,255,.2);
+    background:linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.02));
+  }
+
+  .service-num{
+    display:block;
+    margin-bottom:12px;
+    color:var(--soft);
+    text-transform:uppercase;
+    letter-spacing:.18em;
+    font-size:.68rem;
+  }
+
+  .service-title{
+    display:block;
+    font-size:1.08rem;
+    line-height:1.18;
+    text-transform:uppercase;
+    letter-spacing:.09em;
+    color:rgba(255,255,255,.96);
+    max-width:14ch;
+  }
+
+  .service-hint{
+    display:block;
+    margin-top:18px;
+    font-size:.72rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+
+  .footer{
+    border-top:1px solid var(--line-soft);
+    background:#040404;
+  }
+
+  .footer-line{
+    width:min(100%, calc(100% - 56px));
+    min-height:72px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    color:var(--muted);
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+  }
+
+  .footer a{color:rgba(255,255,255,.82)}
+  .footer a:hover{color:#fff}
+
+  .overlay{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(8px);
+    opacity:0;
+    visibility:hidden;
+    transition:.22s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+  }
+
+  .overlay.open{
+    opacity:1;
+    visibility:visible;
+  }
+
+  .modal{
+    width:min(700px, 100%);
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,.12);
+    background:linear-gradient(180deg, rgba(14,14,14,.96), rgba(7,7,7,.96));
+    box-shadow:0 24px 70px rgba(0,0,0,.58);
+    overflow:hidden;
+  }
+
+  .modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    padding:22px 22px 18px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+
+  .modal-kicker{
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:.22em;
+    font-size:.68rem;
+  }
+
+  .modal-title{
+    margin:10px 0 0;
+    font-size:1.35rem;
+    letter-spacing:-.03em;
+  }
+
+  .modal-close{
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.03);
+    color:rgba(255,255,255,.88);
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    cursor:pointer;
+  }
+
+  .modal-close:hover{background:rgba(255,255,255,.08)}
+
+  .modal-body{
+    padding:22px;
+    color:var(--muted);
+    line-height:1.8;
+    font-size:1rem;
+  }
+
+  @media (max-width:1100px){
+    .tiles{grid-template-columns:repeat(2, minmax(0,1fr))}
+    .services-head{flex-direction:column;align-items:flex-start}
+  }
+
+  @media (max-width:900px){
+    .nav-wrap{
+      width:min(100%, calc(100% - 30px));
+      min-height:auto;
+      padding:20px 0;
+      grid-template-columns:1fr;
+      gap:14px;
+    }
+    .nav-side{
+      width:min(100%, 560px);
+      justify-self:center;
+    }
+    .services-frame{
+      width:min(100%, calc(100% - 30px));
+      padding:22px;
+    }
+    .footer-line{
+      width:min(100%, calc(100% - 30px));
+    }
+  }
+
+  @media (max-width:680px){
+    .nav-side{
+      width:100%;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    .nav-pill{
+      min-height:48px;
+      font-size:.72rem;
+      border-radius:14px;
+    }
+    .tiles{grid-template-columns:1fr}
+    .service-tile{min-height:138px}
+    .footer-line{
+      flex-direction:column;
+      align-items:flex-start;
+      font-size:.72rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="nav-wrap">
+        <nav class="nav-side" aria-label="Primary navigation">
+          <a class="nav-pill" href="index.html">Home</a>
+          <a class="nav-pill" href="about.html">About</a>
+          <a class="nav-pill" href="method.html">Method</a>
+          <a class="nav-pill" href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-stage">
+      <section class="services-frame" aria-label="Services tiles">
+        <div class="services-head">
+          <div>
+            <div class="kicker">Services</div>
+            <h1>Select a service.</h1>
+          </div>
+        </div>
+
+        <div class="tiles">
+          <button class="service-tile" data-kicker="Service 01" data-title="Executive Protection" data-copy="Protective coverage for executives, principals, founders, investors, and other public-facing decision makers. Includes daily movement, arrivals and departures, venue transitions, and disciplined coordination around professional obligations.">
+            <span class="service-num">Service 01</span>
+            <span class="service-title">Executive Protection</span>
+            <span class="service-hint">Open brief</span>
+          </button>
+
+          <button class="service-tile" data-kicker="Service 02" data-title="Talent & Public Figure Security" data-copy="Discreet protection for talent, artists, performers, creators, athletes, and other high-visibility clients during travel, appearances, filming, hospitality environments, and controlled public access points.">
+            <span class="service-num">Service 02</span>
+            <span class="service-title">Talent & Public Figure Security</span>
+            <span class="service-hint">Open brief</span>
+          </button>
+
+          <button class="service-tile" data-kicker="Service 03" data-title="Secure Travel & Movement" data-copy="Advance planning, route discipline, airport coordination, pickup and transfer management, access handling, timing control, and contingency planning designed to reduce delay and avoidable disruption.">
+            <span class="service-num">Service 03</span>
+            <span class="service-title">Secure Travel & Movement</span>
+            <span class="service-hint">Open brief</span>
+          </button>
+
+          <button class="service-tile" data-kicker="Service 04" data-title="Residential & Family Support" data-copy="Protective support for homes, estates, family routines, private gatherings, children’s movement, household staff coordination, and day-to-day privacy concerns handled with professionalism.">
+            <span class="service-num">Service 04</span>
+            <span class="service-title">Residential & Family Support</span>
+            <span class="service-hint">Open brief</span>
+          </button>
+
+          <button class="service-tile" data-kicker="Service 05" data-title="Event & Venue Liaison" data-copy="Coordination with venue teams, drivers, management, production, hospitality staff, and access points to create controlled arrival, cleaner staging, smoother movement, and disciplined departures.">
+            <span class="service-num">Service 05</span>
+            <span class="service-title">Event & Venue Liaison</span>
+            <span class="service-hint">Open brief</span>
+          </button>
+
+          <button class="service-tile" data-kicker="Service 06" data-title="Exposure & Risk Review" data-copy="Review of routines, environmental friction, public schedules, travel patterns, and lifestyle habits that can quietly increase risk over time.">
+            <span class="service-num">Service 06</span>
+            <span class="service-title">Exposure & Risk Review</span>
+            <span class="service-hint">Open brief</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-line">
+        <div>© 2026 BLKVI</div>
+        <div><a href="contact.html">Si vis pacem, para bellum</a></div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-kicker" id="modalKicker">Service</div>
+          <h2 class="modal-title" id="modalTitle">Title</h2>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const overlay = document.getElementById('overlay');
+  const modalKicker = document.getElementById('modalKicker');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+  const closeBtn = document.getElementById('modalClose');
+  const tiles = document.querySelectorAll('.service-tile');
+
+  function openModal(tile){
+    modalKicker.textContent = tile.dataset.kicker || 'Service';
+    modalTitle.textContent = tile.dataset.title || '';
+    modalBody.textContent = tile.dataset.copy || '';
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeModal(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  tiles.forEach(tile => tile.addEventListener('click', () => openModal(tile)));
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+})();
+</script>
+</body>
+</html>
